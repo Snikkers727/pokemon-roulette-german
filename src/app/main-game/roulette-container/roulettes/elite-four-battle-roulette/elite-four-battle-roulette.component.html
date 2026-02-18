@@ -8,7 +8,7 @@
 
 <ng-template #eliteFourPresentationModal let-modal>
     <div class="modal-body">
-        <h1>{{ 'game.main.roulette.elite.elite4' | translate }} {{ currentElite.name }}!</h1>
+        <h1>{{ 'game.main.roulette.elite.elite4' | translate }} {{ currentElite.name | translate }}!</h1>
         <div class="elite-panel">
             <img [src]="currentElite.sprite"
                  alt="{{currentElite.name}}"
