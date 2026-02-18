@@ -1,0 +1,4 @@
+<h1 class="title">{{ 'game.main.roulette.swap.title' | translate }}</h1>
+<app-wheel [items]="swapOptions"
+           (selectedItemEvent)="onItemSelected($event)">
+</app-wheel>
