@@ -1,9 +1,10 @@
-# pokemon-roulette
+# pokemon-roulette German Edition
 A game involving Pokémon and Roulettes
+Original Creator and credits go to zeroxm see his version linked in this file. This is merely a fork with a german translation and auto spinning.
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.2.
 
-And you may play it here: [https://zeroxm.github.io/pokemon-roulette/](https://zeroxm.github.io/pokemon-roulette/)
+And you may play the original version of it here: [https://zeroxm.github.io/pokemon-roulette/](https://zeroxm.github.io/pokemon-roulette/)
 
 ## Development server
 

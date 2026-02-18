@@ -1,5 +1,5 @@
 <h1 class="title">{{ 'game.main.roulette.elite.title' | translate }}</h1>
-<p class="respin-reason">{{ (retries > 0) ? currentItem.text+" x"+retries : ""}}</p>
+<p class="respin-reason"><ng-container *ngIf="retries > 0">{{ currentItem.text | translate }} x{{ retries }}</ng-container></p>
 <app-wheel
     #wheel
     [items]="victoryOdds"
@@ -25,11 +25,11 @@
 
 <ng-template #itemUsedModal let-modal>
     <div class="modal-body">
-        <h1>{{ 'game.main.roulette.elite.use' | translate }} {{ currentItem.text }}!</h1>
+        <h1>{{ 'game.main.roulette.elite.use' | translate }} {{ currentItem.text | translate }}!</h1>
         <div class="item-panel">
             <img [src]="currentItem.sprite" height="128">
             <div class="quotes">
-                <p>{{ currentItem.description }}</p>
+                <p>{{ currentItem.description | translate }}</p>
             </div>
         </div>
     </div>
