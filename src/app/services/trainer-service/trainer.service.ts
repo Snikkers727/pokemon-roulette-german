@@ -261,6 +261,22 @@ export class TrainerService {
     this.trainerTeamObservable.next(this.getTeam());
   }
 
+  swapStoredWithTeam(stored: PokemonItem, teamMember: PokemonItem): void {
+    const storedIdx = this.storedPokemon.indexOf(stored);
+    if (storedIdx > -1) {
+      this.storedPokemon.splice(storedIdx, 1);
+    }
+
+    const teamIdx = this.trainerTeam.indexOf(teamMember);
+    if (teamIdx > -1) {
+      this.trainerTeam.splice(teamIdx, 1, stored);
+    }
+
+    this.storedPokemon.push(teamMember);
+    this.lastAddedPokemon = stored;
+    this.trainerTeamObservable.next(this.getTeam());
+  }
+
   performTrade(pokemonOut: PokemonItem, pokemonIn: PokemonItem): void {
     if (!pokemonIn.sprite) {
       this.pokemonService.getPokemonSprites(pokemonIn.pokemonId).subscribe(response => {

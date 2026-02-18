@@ -28,4 +28,5 @@ export type GameState =
   | 'elite-four-preparation'
   | 'elite-four-battle'
   | 'champion-battle'
+  | 'swap-with-team'
   | 'game-finish';

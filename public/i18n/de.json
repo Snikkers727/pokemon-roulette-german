@@ -148,6 +148,11 @@
         "shiny": {
           "title": "Shiny?"
         },
+        "swap": {
+          "title": "Mit Team tauschen?",
+          "swap": "Tauschen!",
+          "bank": "Bank"
+        },
         "start": {
           "title": "Was machst du zuerst?",
           "actions": {

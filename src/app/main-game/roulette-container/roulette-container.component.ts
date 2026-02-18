@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { AudioService } from '../../services/audio-service/audio.service';
 import { SettingsService } from '../../services/settings-service/settings.service';
 import { RareCandyService } from '../../services/rare-candy-service/rare-candy.service';
+import { GenerationService } from '../../services/generation-service/generation.service';
 import { Subscription } from 'rxjs';
 import { CharacterSelectComponent } from "./roulettes/character-select/character-select.component";
 import { StarterRouletteComponent } from "./roulettes/starter-roulette/starter-roulette.component";
@@ -43,6 +44,7 @@ import { EliteFourBattleRouletteComponent } from "./roulettes/elite-four-battle-
 import { ChampionBattleRouletteComponent } from "./roulettes/champion-battle-roulette/champion-battle-roulette.component";
 import { EndGameComponent } from "../end-game/end-game.component";
 import { GameOverComponent } from "../game-over/game-over.component";
+import { SwapWithTeamRouletteComponent } from "./roulettes/swap-with-team-roulette/swap-with-team-roulette.component";
 
 @Component({
   selector: 'app-roulette-container',
@@ -75,7 +77,8 @@ import { GameOverComponent } from "../game-over/game-over.component";
     EliteFourBattleRouletteComponent,
     ChampionBattleRouletteComponent,
     EndGameComponent,
-    GameOverComponent
+    GameOverComponent,
+    SwapWithTeamRouletteComponent
 ],
   templateUrl: './roulette-container.component.html',
   styleUrl: './roulette-container.component.css'
@@ -90,6 +93,7 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
     constructor(
       private evolutionService: EvolutionService,
       private gameStateService: GameStateService,
+      private generationService: GenerationService,
       private itemService: ItemsService,
       private pokemonService: PokemonService,
       private trainerService: TrainerService,
@@ -101,8 +105,51 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+      const urlParams = new URLSearchParams(window.location.search);
+
+      // Apply autospin query param
+      if (urlParams.get('autospin') === 'true' && !this.settingsService.currentSettings.autoSpin) {
+        this.settingsService.toggleAutoSpin();
+      }
+
+      // Apply generation and gender params before subscribing to avoid UI flash
+      const generationParam = urlParams.get('generation');
+      let generationApplied = false;
+      if (generationParam) {
+        generationApplied = this.applyGenerationParam(generationParam);
+        if (generationApplied) {
+          this.gameStateService.finishCurrentState(); // advance 'game-start' → 'character-select'
+        }
+      }
+
+      const genderParam = urlParams.get('gender');
+      if (genderParam) {
+        if (generationApplied) {
+          // Both params: advance past character-select immediately (no flash)
+          const genderApplied = this.applyGenderParam(genderParam);
+          if (genderApplied) {
+            this.gameStateService.finishCurrentState(); // advance 'character-select' → 'starter-pokemon'
+          }
+        } else {
+          // Only gender: wait for user to pick generation, then auto-advance character-select
+          this.startupGenderParam = genderParam;
+        }
+      }
+
       this.gameStateService.currentState.subscribe(state => {
         this.currentGameState = state;
+
+        // Auto-advance character-select when gender param was provided without generation
+        if (state === 'character-select' && this.startupGenderParam !== null) {
+          const pendingGender = this.startupGenderParam;
+          this.startupGenderParam = null;
+          const genderApplied = this.applyGenderParam(pendingGender);
+          if (genderApplied) {
+            setTimeout(() => this.handleTrainerSelected(), 0);
+            return;
+          }
+        }
+
         if (this.currentGameState === 'adventure-continues') {
           if (this.multitaskCounter > 0) {
             this.respinReason = 'Multitask x' + this.multitaskCounter;
@@ -114,19 +161,19 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.gameStateService.currentRoundObserver.subscribe(round => {
-      this.leadersDefeatedAmount = round;
-    });
+      this.gameStateService.currentRoundObserver.subscribe(round => {
+        this.leadersDefeatedAmount = round;
+      });
 
-    this.gameStateService.wheelSpinningObserver.subscribe(state => {
-      this.wheelSpinning = state;
-    });
+      this.gameStateService.wheelSpinningObserver.subscribe(state => {
+        this.wheelSpinning = state;
+      });
 
-    // Subscribe to rare candy evolution trigger
-    this.rareCandySubscription = this.rareCandyService.rareCandyTrigger$.subscribe((rareCandy) => {
-      this.handleRareCandyEvolution(rareCandy);
-    });
-  }
+      // Subscribe to rare candy evolution trigger
+      this.rareCandySubscription = this.rareCandyService.rareCandyTrigger$.subscribe((rareCandy) => {
+        this.handleRareCandyEvolution(rareCandy);
+      });
+    }
 
   ngOnDestroy(): void {
     this.rareCandySubscription?.unsubscribe();
@@ -141,6 +188,8 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
       this.chooseWhoWillEvolve('rare-candy');
     }
   }
+
+  private startupGenderParam: string | null = null;
 
   @ViewChild('altPrizeModal', { static: true }) altPrizeModal!: TemplateRef<any>;
   @ViewChild('infoModal', { static: true }) infoModal!: TemplateRef<any>;
@@ -200,8 +249,23 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
   }
 
   storePokemon(pokemon: PokemonItem): void {
+    const teamFull = this.trainerService.getTeam().length >= 6;
     this.trainerService.addToTeam(pokemon);
     this.gameStateService.setNextState('check-shininess');
+    if (teamFull && this.settingsService.currentSettings.autoSpin) {
+      this.gameStateService.setNextState('swap-with-team');
+    }
+    this.finishCurrentState();
+  }
+
+  handleSwapDecision(shouldSwap: boolean): void {
+    if (shouldSwap) {
+      const stored = this.trainerService.getStored();
+      const lastStored = stored[stored.length - 1];
+      const team = this.trainerService.getTeam();
+      const randomIdx = Math.floor(Math.random() * team.length);
+      this.trainerService.swapStoredWithTeam(lastStored, team[randomIdx]);
+    }
     this.finishCurrentState();
   }
 
@@ -635,6 +699,30 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
   private removeFromTeam(pokemon: PokemonItem): void {
     this.trainerService.removeFromTeam(pokemon);
     this.auxPokemonList = [];
+  }
+
+  private applyGenerationParam(generationParam: string): boolean {
+    if (generationParam === 'random') {
+      return false; // Let the roulette spin and pick randomly
+    }
+    const generations = this.generationService.getGenerationList();
+    const genId = parseInt(generationParam, 10);
+    const genIndex = generations.findIndex(g => g.id === genId);
+    if (genIndex >= 0) {
+      this.generationService.setGeneration(genIndex);
+      return true;
+    }
+    return false;
+  }
+
+  private applyGenderParam(genderParam: string): boolean {
+    const normalized = genderParam === 'boy' ? 'male' : genderParam === 'girl' ? 'female' : genderParam;
+    if (['male', 'female'].includes(normalized)) {
+      const currentGen = this.generationService.getCurrentGeneration();
+      this.trainerService.setTrainer(currentGen.id, normalized);
+      return true;
+    }
+    return false;
   }
 
   private playItemFoundAudio(): void {

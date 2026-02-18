@@ -13,10 +13,18 @@ export class AppComponent {
   title = 'pokemon-roulette';
 
   constructor(private translate: TranslateService) {
-    const savedLanguage = localStorage.getItem('language') || 'de';
-    this.translate.addLangs(['en', 'fr', 'es', 'de']);
+    const validLangs = ['en', 'fr', 'es', 'de'];
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get('language');
+    const savedLanguage = (langParam && validLangs.includes(langParam))
+      ? langParam
+      : (localStorage.getItem('language') || 'de');
+    this.translate.addLangs(validLangs);
     this.translate.setDefaultLang('de');
     this.translate.use(savedLanguage);
+    if (langParam && validLangs.includes(langParam)) {
+      localStorage.setItem('language', langParam);
+    }
   }
 
   changeLang(lang: string) {

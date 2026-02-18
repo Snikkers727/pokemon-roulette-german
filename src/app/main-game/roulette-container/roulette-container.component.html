@@ -151,6 +151,10 @@
         [currentRound]="leadersDefeatedAmount"
         (battleResultEvent)="championBattleResult($event)">
     </app-champion-battle-roulette>
+    <app-swap-with-team-roulette
+        *ngSwitchCase="'swap-with-team'"
+        (shouldSwapEvent)="handleSwapDecision($event)">
+    </app-swap-with-team-roulette>
     <app-end-game
         *ngSwitchCase="'game-finish'">
     </app-end-game>

@@ -149,6 +149,11 @@
         "shiny": {
           "title": "Shiny?"
         },
+        "swap": {
+          "title": "Swap with Team?",
+          "swap": "Swap!",
+          "bank": "Bank"
+        },
         "start": {
           "title": "What to do first?",
           "actions": {

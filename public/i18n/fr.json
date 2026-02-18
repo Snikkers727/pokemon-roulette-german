@@ -148,6 +148,11 @@
         "shiny": {
           "title": "Shiny ?"
         },
+        "swap": {
+          "title": "Échanger avec l'équipe ?",
+          "swap": "Échanger !",
+          "bank": "Banque"
+        },
         "start": {
           "title": "Que faire en premier ?",
           "actions": {

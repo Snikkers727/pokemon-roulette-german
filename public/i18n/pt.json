@@ -148,6 +148,11 @@
         "shiny": {
           "title": "Shiny?"
         },
+        "swap": {
+          "title": "Trocar com o time?",
+          "swap": "Trocar!",
+          "bank": "Banco"
+        },
         "start": {
           "title": "O que fazer primeiro?",
           "actions": {
