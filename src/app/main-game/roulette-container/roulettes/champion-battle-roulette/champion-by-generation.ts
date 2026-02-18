@@ -6,9 +6,9 @@ export const championByGeneration: Record<number, GymLeader[]> = {
             name: 'Blue',
             sprite: "https://raw.githubusercontent.com/zeroxm/pokemon-roulette-trainer-sprites/refs/heads/main/sprites/FireRed_LeafGreen_Blue.png",
             quotes: [
-                "My teams can beat any Pokémon type.",
-                "And now… I am the Pokémon League Champion!",
-                "I'll tell you. I am the most powerful Trainer in the world!"
+                "Mein Team kann jeden Pokémon-Typ besiegen.",
+                "Und jetzt… bin ich der Pokémon-Liga-Champion!",
+                "Ich sage dir: Ich bin der stärkste Trainer der Welt!"
             ]
         }
     ],
@@ -17,8 +17,8 @@ export const championByGeneration: Record<number, GymLeader[]> = {
             name: 'Lance',
             sprite: "https://raw.githubusercontent.com/zeroxm/pokemon-roulette-trainer-sprites/refs/heads/main/sprites/Masters_Lance_Dragonite_artwork.png",
             quotes: [
-                "As the most powerful Trainer and as the Pokémon League Champion…",
-                "I, Lance the dragon master, accept your challenge!"
+                "Als der stärkste Trainer und als Pokémon-Liga-Champion…",
+                "Ich, Lance, der Drachenmeister, nehme deine Herausforderung an!"
             ]
         }
     ],
@@ -27,8 +27,8 @@ export const championByGeneration: Record<number, GymLeader[]> = {
             name: 'Steven',
             sprite: "https://raw.githubusercontent.com/zeroxm/pokemon-roulette-trainer-sprites/refs/heads/main/sprites/Omega_Ruby_Alpha_Sapphire_Steven.png",
             quotes: [
-                "Traveling this rich land of Hoenn… Has it awoken something inside you?",
-                "I want you to come at me with all that you've learned."
+                "Das Reisen durch das reiche Land Hoenn… Hat es etwas in dir geweckt?",
+                "Ich möchte, dass du mit allem antritts, was du gelernt hast."
             ]
         }
     ],
@@ -37,8 +37,8 @@ export const championByGeneration: Record<number, GymLeader[]> = {
             name: 'Cynthia',
             sprite: "https://raw.githubusercontent.com/zeroxm/pokemon-roulette-trainer-sprites/refs/heads/main/sprites/Diamond_Pearl_Cynthia.png",
             quotes: [
-                "I'm so glad that you're the one who's challenging me today!",
-                "I will accept your challenge with everything I've got!"
+                "Ich bin so froh, dass ausgerechnet du mich heute herausforderst!",
+                "Ich nehme deine Herausforderung mit allem, was ich habe, an!"
             ]
         }
     ],
@@ -47,7 +47,7 @@ export const championByGeneration: Record<number, GymLeader[]> = {
             name: 'Alder',
             sprite:'https://raw.githubusercontent.com/zeroxm/pokemon-roulette-trainer-sprites/refs/heads/main/sprites/Black_White_Alder.png',
             quotes: [
-                "I've really been looking forward to deciding who's the strongest Pokémon Trainer in the Unova region! Kiai!"
+                "Ich habe mich wirklich darauf gefreut, herauszufinden, wer der stärkste Pokémon-Trainer in der Einall-Region ist! Kiai!"
             ]
         }
     ],
@@ -56,7 +56,7 @@ export const championByGeneration: Record<number, GymLeader[]> = {
             name: 'Diantha',
             sprite: "https://raw.githubusercontent.com/zeroxm/pokemon-roulette-trainer-sprites/refs/heads/main/sprites/XY_Diantha.png",
             quotes: [
-                "I can't wait to see what you and your Pokémon are capable of now that I know exactly what it is you've done already!"
+                "Ich kann es kaum erwarten zu sehen, wozu du und deine Pokémon in der Lage seid, jetzt wo ich genau weiß, was du bereits geleistet hast!"
             ]
         }
     ],
@@ -68,8 +68,8 @@ export const championByGeneration: Record<number, GymLeader[]> = {
                 "https://raw.githubusercontent.com/zeroxm/pokemon-roulette-trainer-sprites/refs/heads/main/sprites/USUM_Hau.png"
             ],
             quotes: [
-                "I don't really wanna be the Champion of the Pokémon League I made myself, but there's nothing wrong with wanting to take on the biggest and baddest Trainer there is, right?",
-                "I really wanna have a serious battle against you! I really want to be able to win against you!"
+                "Ich will eigentlich nicht der Champion der Pokémon-Liga sein, die ich selbst gegründet habe, aber es ist doch nichts falsch daran, den stärksten Trainer aller Zeiten herausfordern zu wollen, oder?",
+                "Ich möchte wirklich einen ernsthaften Kampf gegen dich! Ich will wirklich in der Lage sein, gegen dich zu gewinnen!"
             ]
         }
     ],
@@ -78,8 +78,8 @@ export const championByGeneration: Record<number, GymLeader[]> = {
             name: 'Leon',
             sprite: "https://raw.githubusercontent.com/zeroxm/pokemon-roulette-trainer-sprites/refs/heads/main/sprites/Sword_Shield_Leon.png",
             quotes: [
-                "The time has come for you to battle it out until only the greatest challenger remains!",
-                "So, on behalf of the chairman, allow me to say... let the Finals matches begin!"
+                "Die Zeit ist gekommen, bis nur noch der größte Herausforderer übrig bleibt!",
+                "Also, im Namen des Vorsitzenden darf ich sagen... mögen die Finalrunden beginnen!"
             ]
         }
     ]
