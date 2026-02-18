@@ -16,8 +16,8 @@ export class ShinyRouletteComponent implements OnInit {
   @Output () isShinyEvent = new EventEmitter<boolean>();
 
   shinyOdds: WheelItem[] = [
-    { text: 'yes', fillStyle: 'green', weight: 1 },
-    { text: 'no', fillStyle: 'crimson', weight: 63 }
+    { text: 'ja', fillStyle: 'green', weight: 1 },
+    { text: 'nein', fillStyle: 'crimson', weight: 63 }
   ];
 
   constructor(public settingsService: SettingsService) {}
@@ -32,7 +32,7 @@ export class ShinyRouletteComponent implements OnInit {
   }
 
   onItemSelected(index: number): void {
-    if (this.shinyOdds[index].text === 'yes') {
+    if (this.shinyOdds[index].text === 'ja') {
       this.isShinyEvent.emit(true);
     } else {
       this.isShinyEvent.emit(false);

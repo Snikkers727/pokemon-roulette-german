@@ -5,6 +5,7 @@ export interface GameSettings {
   muteAudio: boolean;
   skipShinyRolls: boolean;
   lessExplanations: boolean;
+  autoSpin: boolean;
 }
 
 @Injectable({
@@ -16,7 +17,8 @@ export class SettingsService {
   private readonly defaultSettings: GameSettings = {
     muteAudio: false,
     skipShinyRolls: false,
-    lessExplanations: false
+    lessExplanations: false,
+    autoSpin: false
   };
 
   private settingsSubject$: BehaviorSubject<GameSettings>;
@@ -48,6 +50,12 @@ export class SettingsService {
   toggleLessExplanations(): void {
     const currentSettings = this.currentSettings;
     const newSettings = { ...currentSettings, lessExplanations: !currentSettings.lessExplanations };
+    this.updateSettings(newSettings);
+  }
+
+  toggleAutoSpin(): void {
+    const currentSettings = this.currentSettings;
+    const newSettings = { ...currentSettings, autoSpin: !currentSettings.autoSpin };
     this.updateSettings(newSettings);
   }
 

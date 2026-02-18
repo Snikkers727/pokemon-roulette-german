@@ -4,7 +4,8 @@
       "darkmode": "Modo oscuro",
       "explanations": "Menos explicaciones",
       "muteAudio": "Silenciar Audio",
-      "skipShinyRolls": "Omitir Tiradas de Shiny"
+      "skipShinyRolls": "Omitir Tiradas de Shiny",
+      "autoSpin": "Giro Automático"
   },
   "coffee": {
     "title": "¿Te estás divirtiendo girando? 😁",
@@ -310,7 +311,8 @@
     }
   },
   "wheel": {
-    "spin": "¡Haz clic para girar!"
+    "spin": "¡Haz clic para girar!",
+    "autoSpinIn": "Giro automático en {{count}}s"
   },
   "pokemon": {
     "bulbasaur": "Bulbasaur",

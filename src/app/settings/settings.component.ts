@@ -43,4 +43,8 @@ export class SettingsComponent implements OnInit {
     this.settingsService.toggleSkipShinyRolls();
   }
 
+  onToggleAutoSpin(): void {
+    this.settingsService.toggleAutoSpin();
+  }
+
 }

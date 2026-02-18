@@ -4,7 +4,8 @@
       "darkmode": "Mode sombre",
       "explanations": "Moins d'explications",
       "muteAudio": "Couper l'Audio",
-  "skipShinyRolls": "Omettre les Roulettes Shiny"
+  "skipShinyRolls": "Omettre les Roulettes Shiny",
+  "autoSpin": "Rotation Automatique"
   },
   "coffee": {
     "title": "Vous amusez-vous à faire tourner la roue ? 😁",
@@ -310,7 +311,8 @@
     }
   },
   "wheel": {
-    "spin": "Cliquez pour tourner !"
+    "spin": "Cliquez pour tourner !",
+    "autoSpinIn": "Rotation automatique dans {{count}}s"
   },
   "pokemon": {
     "bulbasaur": "Bulbizarre",

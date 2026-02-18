@@ -16,5 +16,8 @@
             (click)="spinWheel()">
             {{ 'wheel.spin' | translate }}
     </button>
+    <p *ngIf="autoSpinCountdown > 0" class="auto-spin-countdown text-secondary">
+        {{ 'wheel.autoSpinIn' | translate:{ count: autoSpinCountdown } }}
+    </p>
 </div>
 

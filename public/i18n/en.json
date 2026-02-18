@@ -4,7 +4,8 @@
       "darkmode": "Dark Mode",
       "explanations": "Less Explanations",
       "muteAudio": "Mute Audio",
-      "skipShinyRolls": "Hide Shiny Rolls"
+      "skipShinyRolls": "Hide Shiny Rolls",
+      "autoSpin": "Auto Spin"
   },
   "coffee": {
     "title": "Having fun spinning? 😁",
@@ -311,7 +312,8 @@
     }
   },
   "wheel": {
-    "spin": "Click to Spin !"
+    "spin": "Click to Spin !",
+    "autoSpinIn": "Auto spin in {{count}}s"
   },
   "pokemon": {
     "bulbasaur": "Bulbasaur",

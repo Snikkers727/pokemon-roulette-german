@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { WheelItem } from '../interfaces/wheel-item';
 import { DarkModeService } from '../services/dark-mode-service/dark-mode.service';
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { GameStateService } from '../services/game-state-service/game-state.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AudioService } from '../services/audio-service/audio.service';
+import { SettingsService } from '../services/settings-service/settings.service';
 
 @Component({
   selector: 'app-wheel',
@@ -16,7 +17,7 @@ import { AudioService } from '../services/audio-service/audio.service';
   templateUrl: './wheel.component.html',
   styleUrl: './wheel.component.css'
 })
-export class WheelComponent implements AfterViewInit, OnChanges {
+export class WheelComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   wheelCanvas!: HTMLCanvasElement;
   wheelCtx!: CanvasRenderingContext2D;
@@ -41,14 +42,17 @@ export class WheelComponent implements AfterViewInit, OnChanges {
   winningNumber!: number;
   currentSegment: string = '-';
   clickAudio!: HTMLAudioElement;
-  
+  autoSpinCountdown: number = 0;
+
   private translatedItems: WheelItem[] = [];
+  private autoSpinTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(
     private darkModeService: DarkModeService,
     private gameStateService: GameStateService,
     private translateService: TranslateService,
-    private audioService: AudioService
+    private audioService: AudioService,
+    private settingsService: SettingsService
   ) {
     this.clickAudio = this.audioService.createAudio('./click.mp3');
     this.darkMode = this.darkModeService.darkMode$;
@@ -74,17 +78,24 @@ export class WheelComponent implements AfterViewInit, OnChanges {
       this.preprocessTranslations();
       this.drawWheel();
       this.drawPointer();
+      this.startAutoSpinCountdown();
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['items'] && !changes['items'].firstChange) {
+      this.cancelAutoSpinCountdown();
       this.translateService.get('wheel.spin').subscribe(() => {
         this.preprocessTranslations();
         this.drawWheel();
         this.drawPointer();
+        this.startAutoSpinCountdown();
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.cancelAutoSpinCountdown();
   }
 
   private preprocessTranslations(): void {
@@ -152,6 +163,7 @@ export class WheelComponent implements AfterViewInit, OnChanges {
       return;
     }
 
+    this.cancelAutoSpinCountdown();
     this.spinning = true;
     this.gameStateService.setWheelSpinning(this.spinning);
 
@@ -197,6 +209,7 @@ export class WheelComponent implements AfterViewInit, OnChanges {
       this.spinning = false;
       this.selectedItemEvent.emit(this.winningNumber);
       this.gameStateService.setWheelSpinning(false);
+      this.startAutoSpinCountdown();
     }
 
     const segment = this.getCurrentSegment();
@@ -240,5 +253,26 @@ export class WheelComponent implements AfterViewInit, OnChanges {
       }
     }
     return this.translatedItems.length - 1;
+  }
+
+  private startAutoSpinCountdown(): void {
+    if (!this.settingsService.currentSettings.autoSpin) return;
+    this.cancelAutoSpinCountdown();
+    this.autoSpinCountdown = 10;
+    this.autoSpinTimer = setInterval(() => {
+      this.autoSpinCountdown--;
+      if (this.autoSpinCountdown <= 0) {
+        this.cancelAutoSpinCountdown();
+        this.spinWheel();
+      }
+    }, 1000);
+  }
+
+  private cancelAutoSpinCountdown(): void {
+    if (this.autoSpinTimer !== null) {
+      clearInterval(this.autoSpinTimer);
+      this.autoSpinTimer = null;
+    }
+    this.autoSpinCountdown = 0;
   }
 }
