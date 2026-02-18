@@ -21,12 +21,12 @@ export class ExploreCaveRouletteComponent {
   @Output() teamRocketEncounterEvent = new EventEmitter<void>();
 
   actions: WheelItem[] = [
-    { text: 'Catch cave Pokémon', fillStyle: 'crimson', weight: 1 },
-    { text: 'Battle Trainer', fillStyle: 'darkorange', weight: 1 },
-    { text: 'Find an Item', fillStyle: 'darkgoldenrod', weight: 1 },
-    { text: 'Get Lost', fillStyle: 'green', weight: 1 },
-    { text: 'Catch a Zubat', fillStyle: 'darkcyan', weight: 1 },
-    { text: 'Find a Fossil', fillStyle: 'blue', weight: 1 },
+    { text: 'Höhlen-Pokémon fangen', fillStyle: 'crimson', weight: 1 },
+    { text: 'Trainerkampf', fillStyle: 'darkorange', weight: 1 },
+    { text: 'Ein Item finden', fillStyle: 'darkgoldenrod', weight: 1 },
+    { text: 'Verirren', fillStyle: 'green', weight: 1 },
+    { text: 'Einen Zubat fangen', fillStyle: 'darkcyan', weight: 1 },
+    { text: 'Ein Fossil finden', fillStyle: 'blue', weight: 1 },
     { text: 'Team Rocket', fillStyle: 'purple', weight: 1 },
   ];
 

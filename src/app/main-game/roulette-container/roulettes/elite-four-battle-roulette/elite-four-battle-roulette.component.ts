@@ -13,6 +13,7 @@ import { PokemonItem } from '../../../../interfaces/pokemon-item';
 import { ItemItem } from '../../../../interfaces/item-item';
 import { WheelItem } from '../../../../interfaces/wheel-item';
 import { GymLeader } from '../../../../interfaces/gym-leader';
+import { SettingsService } from '../../../../services/settings-service/settings.service';
 
 @Component({
   selector: 'app-elite-four-battle-roulette',
@@ -31,8 +32,17 @@ export class EliteFourBattleRouletteComponent implements OnInit, OnDestroy {
   constructor(private modalService: NgbModal,
     private gameStateService: GameStateService,
     private generationService: GenerationService,
-    private trainerService: TrainerService
+    private trainerService: TrainerService,
+    private settingsService: SettingsService
   ) { }
+
+  private openModalWithAutoClose(template: TemplateRef<any>, options: any) {
+    const modalRef = this.modalService.open(template, options);
+    if (this.settingsService.currentSettings.autoSpin) {
+      setTimeout(() => modalRef.dismiss(), 5000);
+    }
+    return modalRef;
+  }
 
   private gameSubscription: Subscription | null = null;
   private generationSubscription: Subscription | null = null;
@@ -47,8 +57,8 @@ export class EliteFourBattleRouletteComponent implements OnInit, OnDestroy {
   @Output() battleResultEvent = new EventEmitter<boolean>();
 
   victoryOdds: WheelItem[] = [
-    { text: 'Yes', fillStyle: 'green', weight: 1 },
-    { text: 'No', fillStyle: 'crimson', weight: 1 }
+    { text: 'Ja', fillStyle: 'green', weight: 1 },
+    { text: 'Nein', fillStyle: 'crimson', weight: 1 }
   ];
 
   currentElite!: GymLeader;
@@ -73,7 +83,7 @@ export class EliteFourBattleRouletteComponent implements OnInit, OnDestroy {
         this.currentElite = this.getCurrentElite();
         this.calcVictoryOdds();
 
-        this.modalService.open(this.eliteFourPresentationModal, {
+        this.openModalWithAutoClose(this.eliteFourPresentationModal, {
           centered: true,
           size: 'lg'
         });
@@ -93,7 +103,7 @@ export class EliteFourBattleRouletteComponent implements OnInit, OnDestroy {
 
   onItemSelected(index: number): void {
     this.retries--;
-    if (this.victoryOdds[index].text === 'Yes') {
+    if (this.victoryOdds[index].text === 'Ja') {
       this.battleResultEvent.emit(true);
     } else {
       if (this.retries <= 0) {
@@ -110,25 +120,25 @@ export class EliteFourBattleRouletteComponent implements OnInit, OnDestroy {
   private calcVictoryOdds(): void {
     this.victoryOdds = [];
 
-    this.victoryOdds.push({ text: "Yes", fillStyle: "green", weight: 1 });
+    this.victoryOdds.push({ text: "Ja", fillStyle: "green", weight: 1 });
 
     this.trainerTeam.forEach(pokemon => {
       for (let i = 0; i < pokemon.power; i++) {
-        this.victoryOdds.push({ text: "Yes", fillStyle: "green", weight: 1 });
+        this.victoryOdds.push({ text: "Ja", fillStyle: "green", weight: 1 });
       }
     });
 
     const powerModifier = this.plusModifiers();
 
     for (let i = 0; i < powerModifier; i++) {
-      this.victoryOdds.push({ text: "Yes", fillStyle: "green", weight: 1 });
+      this.victoryOdds.push({ text: "Ja", fillStyle: "green", weight: 1 });
     }
 
     for (let index = 0; index < this.currentRound; index++) {
-      this.victoryOdds.push({ text: "No", fillStyle: "crimson", weight: 1 });
+      this.victoryOdds.push({ text: "Nein", fillStyle: "crimson", weight: 1 });
     }
 
-    this.victoryOdds.push({ text: "No", fillStyle: "crimson", weight: 1 });
+    this.victoryOdds.push({ text: "Nein", fillStyle: "crimson", weight: 1 });
   }
 
   private plusModifiers(): number {
@@ -190,7 +200,7 @@ export class EliteFourBattleRouletteComponent implements OnInit, OnDestroy {
         break;
     }
 
-    this.modalService.open(this.itemUsedModal, {
+    this.openModalWithAutoClose(this.itemUsedModal, {
       centered: true,
       size: 'md'
     });

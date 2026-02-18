@@ -226,11 +226,11 @@ export const gymLeadersByGeneration: Record<number, GymLeader[]> = {
         ]
       },
       {
-        name: 'gymLeaders.crasherWake.name',
+        name: 'gymLeaders.crasher-wake.name',
         sprite: "https://raw.githubusercontent.com/zeroxm/pokemon-roulette-trainer-sprites/refs/heads/main/sprites/Spr_B2W2_Crasher_Wake.png",
         quotes: [
-          "gymLeaders.crasherWake.quote1",
-          "gymLeaders.crasherWake.quote2"
+          "gymLeaders.crasher-wake.quote1",
+          "gymLeaders.crasher-wake.quote2"
         ]
       },
       {

@@ -8,6 +8,7 @@ import { ItemsService } from '../../../../services/items-service/items.service';
 import { ItemSpriteService } from '../../../../services/item-sprite-service/item-sprite.service';
 import { ItemItem } from '../../../../interfaces/item-item';
 import { AudioService } from '../../../../services/audio-service/audio.service';
+import { SettingsService } from '../../../../services/settings-service/settings.service';
 
 @Component({
   selector: 'app-find-item-roulette',
@@ -24,9 +25,18 @@ export class FindItemRouletteComponent {
   constructor(private modalService: NgbModal,
     private itemService: ItemsService,
     private itemSpriteService: ItemSpriteService,
-    private audioService: AudioService) {
+    private audioService: AudioService,
+    private settingsService: SettingsService) {
     this.items = itemService.getAllItems();
     this.itemFoundAudio = this.audioService.createAudio('./ItemFound.mp3');
+  }
+
+  private openModalWithAutoClose(template: TemplateRef<any>, options: any) {
+    const modalRef = this.modalService.open(template, options);
+    if (this.settingsService.currentSettings.autoSpin) {
+      setTimeout(() => modalRef.dismiss(), 5000);
+    }
+    return modalRef;
   }
 
   @ViewChild('itemExplainerModal', { static: true }) itemExplainerModal!: TemplateRef<any>;
@@ -46,7 +56,7 @@ export class FindItemRouletteComponent {
 
     this.audioService.playAudio(this.itemFoundAudio, 0.25);
 
-    const modalRef = this.modalService.open(this.itemExplainerModal, {
+    const modalRef = this.openModalWithAutoClose(this.itemExplainerModal, {
       centered: true,
       size: 'md',
       keyboard: false

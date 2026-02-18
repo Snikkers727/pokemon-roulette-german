@@ -4,6 +4,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import { WheelComponent } from '../../../../wheel/wheel.component';
 import { PokemonItem } from '../../../../interfaces/pokemon-item';
 import { WheelItem } from '../../../../interfaces/wheel-item';
+import { SettingsService } from '../../../../services/settings-service/settings.service';
 
 @Component({
   selector: 'app-team-rocket-roulette',
@@ -13,7 +14,14 @@ import { WheelItem } from '../../../../interfaces/wheel-item';
 })
 export class TeamRocketRouletteComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) {
+  constructor(private modalService: NgbModal, private settingsService: SettingsService) { }
+
+  private openModalWithAutoClose(template: TemplateRef<any>, options: any) {
+    const modalRef = this.modalService.open(template, options);
+    if (this.settingsService.currentSettings.autoSpin) {
+      setTimeout(() => modalRef.dismiss(), 5000);
+    }
+    return modalRef;
   }
 
   @Input() stolenPokemon!: PokemonItem | null;
@@ -36,17 +44,17 @@ export class TeamRocketRouletteComponent implements OnInit {
 
   ngOnInit(): void {
     this.outcomes = [
-      { text: 'They steal a Pokémon', fillStyle: 'crimson', weight: 2 },
-      { text: 'You run away', fillStyle: 'darkorange', weight: 2 },
+      { text: 'Sie stehlen ein Pokémon', fillStyle: 'crimson', weight: 2 },
+      { text: 'Du fliehst', fillStyle: 'darkorange', weight: 2 },
     ];
 
     if (this.stolenPokemon) {
-      this.outcomes.push({ text: 'You defeat them', fillStyle: 'green', weight: 4 });
+      this.outcomes.push({ text: 'Du besiegst sie', fillStyle: 'green', weight: 4 });
     } else {
-      this.outcomes.push({ text: 'You defeat them', fillStyle: 'green', weight: 1 });
+      this.outcomes.push({ text: 'Du besiegst sie', fillStyle: 'green', weight: 1 });
     }
 
-    this.modalService.open(this.teamRockerModal, {
+    this.openModalWithAutoClose(this.teamRockerModal, {
       centered: true,
       size: 'lg'
     });

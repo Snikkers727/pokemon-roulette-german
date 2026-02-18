@@ -4,6 +4,7 @@ import {TranslatePipe} from '@ngx-translate/core';
 import { WheelComponent } from '../../../../wheel/wheel.component';
 import { WheelItem } from '../../../../interfaces/wheel-item';
 import { EventSource } from '../../../EventSource';
+import { SettingsService } from '../../../../services/settings-service/settings.service';
 
 @Component({
   selector: 'app-elite-four-prep-roulette',
@@ -13,12 +14,20 @@ import { EventSource } from '../../../EventSource';
 })
 export class EliteFourPrepRouletteComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private settingsService: SettingsService) { }
+
+  private openModalWithAutoClose(template: TemplateRef<any>, options: any) {
+    const modalRef = this.modalService.open(template, options);
+    if (this.settingsService.currentSettings.autoSpin) {
+      setTimeout(() => modalRef.dismiss(), 5000);
+    }
+    return modalRef;
+  }
 
   @ViewChild('victoryRoadModal', { static: true }) victoryRoadModal!: TemplateRef<any>;
 
   ngOnInit(): void {
-    this.modalService.open(this.victoryRoadModal, {
+    this.openModalWithAutoClose(this.victoryRoadModal, {
       centered: true,
       size: 'lg'
     });
@@ -35,14 +44,14 @@ export class EliteFourPrepRouletteComponent implements OnInit {
   @Output() teamRocketEncounterEvent = new EventEmitter<void>();
 
   actions: WheelItem[] = [
-    { text: 'Catch a Pokémon', fillStyle: 'crimson', weight: 2 },
-    { text: 'Training Arc', fillStyle: 'darkorange', weight: 2 },
-    { text: 'Buy Potions', fillStyle: 'darkgoldenrod', weight: 2 },
-    { text: 'Catch two Pokémon', fillStyle: 'green', weight: 2 },
-    { text: 'Hunt a Legendary', fillStyle: 'darkcyan', weight: 2 },
-    { text: 'Find an Item', fillStyle: 'blue', weight: 2 },
-    { text: 'Go Straight', fillStyle: 'purple', weight: 1 },
-    { text: 'Team Rocket Encounter', fillStyle: 'black', weight: 1 }
+    { text: 'Ein Pokémon fangen', fillStyle: 'crimson', weight: 2 },
+    { text: 'Trainingsphase', fillStyle: 'darkorange', weight: 2 },
+    { text: 'Tränke kaufen', fillStyle: 'darkgoldenrod', weight: 2 },
+    { text: 'Zwei Pokémon fangen', fillStyle: 'green', weight: 2 },
+    { text: 'Legendäres jagen', fillStyle: 'darkcyan', weight: 2 },
+    { text: 'Ein Item finden', fillStyle: 'blue', weight: 2 },
+    { text: 'Direkt weiter', fillStyle: 'purple', weight: 1 },
+    { text: 'Team Rocket Begegnung', fillStyle: 'black', weight: 1 }
   ];
 
   onItemSelected(index: number): void {

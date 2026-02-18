@@ -150,6 +150,15 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
           }
         }
 
+        // Auto-advance character-select with random gender when auto spin is enabled and no gender param was set
+        if (state === 'character-select' && this.startupGenderParam === null && this.settingsService.currentSettings.autoSpin) {
+          const randomGender = Math.random() < 0.5 ? 'male' : 'female';
+          const currentGen = this.generationService.getCurrentGeneration();
+          this.trainerService.setTrainer(currentGen.id, randomGender);
+          setTimeout(() => this.handleTrainerSelected(), 0);
+          return;
+        }
+
         if (this.currentGameState === 'adventure-continues') {
           if (this.multitaskCounter > 0) {
             this.respinReason = 'Multitask x' + this.multitaskCounter;
@@ -292,7 +301,7 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
           this.altPrizeText = 'Got a Bonus Potion!';
           this.altPrizeSprite = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/potion.png';
           this.altPrizeDescription = 'Since no evolution was possible, get the best Potion your money can buy!';
-          this.modalService.open(this.altPrizeModal, {
+          this.openModalWithAutoClose(this.altPrizeModal, {
             centered: true,
             size: 'md'
           });
@@ -302,7 +311,7 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
             this.altPrizeText = 'Got a Mysterious Egg!';
             this.altPrizeSprite = 'https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/items/mystery-egg.png';
             this.altPrizeDescription = 'The people from the Day Care gave you a Mysterious Egg!';
-            this.modalService.open(this.altPrizeModal, {
+            this.openModalWithAutoClose(this.altPrizeModal, {
               centered: true,
               size: 'md'
             });
@@ -312,7 +321,7 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
           this.altPrizeText = 'Got an Item!';
           this.altPrizeSprite = 'https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/items/unknown.png';
           this.altPrizeDescription = 'Your Rival said you only won by luck and gave you an Item!';
-          this.modalService.open(this.altPrizeModal, {
+          this.openModalWithAutoClose(this.altPrizeModal, {
             centered: true,
             size: 'md'
           });
@@ -507,7 +516,7 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
     const trainerTeam = this.trainerService.getTeam();
 
     if (trainerTeam.length === 1) {
-      const modalRef = this.modalService.open(this.teamRocketFailsModal, {
+      const modalRef = this.openModalWithAutoClose(this.teamRocketFailsModal, {
         centered: true,
         size: 'md'
       });
@@ -534,7 +543,7 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
       this.infoModalTitle = 'Saved ' + this.stolenPokemon.text + '!';
       this.infoModalMessage = 'You recovered your ' + this.stolenPokemon.text + ' from Team Rocket.';
       this.stolenPokemon = null;
-      this.modalService.open(this.infoModal, {
+      this.openModalWithAutoClose(this.infoModal, {
         centered: true,
         size: 'md'
       });
@@ -563,7 +572,7 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
     this.auxPokemonList = [];
     this.playItemFoundAudio();
     if (!this.settingsService.currentSettings.lessExplanations) {
-      const modalRef = this.modalService.open(this.pkmnTradeModal, {
+      const modalRef = this.openModalWithAutoClose(this.pkmnTradeModal, {
         centered: true,
         size: 'md'
       });
@@ -639,6 +648,14 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
 
   closeModal(): void {
     this.modalService.dismissAll();
+  }
+
+  private openModalWithAutoClose(template: TemplateRef<any>, options: any) {
+    const modalRef = this.modalService.open(template, options);
+    if (this.settingsService.currentSettings.autoSpin) {
+      setTimeout(() => modalRef.dismiss(), 5000);
+    }
+    return modalRef;
   }
 
   resetGameAction(): void {
@@ -732,7 +749,7 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
   private showpkmnEvoModal(): void {
     this.playItemFoundAudio();
     if (!this.settingsService.currentSettings.lessExplanations) {
-      const modalRef = this.modalService.open(this.pkmnEvoModal, {
+      const modalRef = this.openModalWithAutoClose(this.pkmnEvoModal, {
         centered: true,
         size: 'md'
       });
@@ -755,7 +772,7 @@ export class RouletteContainerComponent implements OnInit, OnDestroy {
       this.gameStateService.setNextState('adventure-continues');
 
       if (!this.settingsService.currentSettings.lessExplanations) {
-        const modalRef = this.modalService.open(this.itemActivateModal, {
+        const modalRef = this.openModalWithAutoClose(this.itemActivateModal, {
           centered: true,
           size: 'md'
         });

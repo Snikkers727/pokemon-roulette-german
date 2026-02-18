@@ -24,7 +24,7 @@ export class CheckEvolutionRouletteComponent implements OnInit {
   }
 
   onItemSelected(index: number): void {
-    if (this.evolveOdds[index].text === 'yes') {
+    if (this.evolveOdds[index].text === 'ja') {
       this.evolutionCreditsChange.emit(0);
       this.evolvePokemonEvent.emit('gym-battle');
     } else {
@@ -35,14 +35,14 @@ export class CheckEvolutionRouletteComponent implements OnInit {
 
   private resetOdds(): void {
     this.evolveOdds = [
-      { text: 'yes', fillStyle: 'green', weight: 1 },
-      { text: 'no', fillStyle: 'crimson', weight: 1 },
-      { text: 'no', fillStyle: 'crimson', weight: 1 },
-      { text: 'no', fillStyle: 'crimson', weight: 1 },
+      { text: 'ja', fillStyle: 'green', weight: 1 },
+      { text: 'nein', fillStyle: 'crimson', weight: 1 },
+      { text: 'nein', fillStyle: 'crimson', weight: 1 },
+      { text: 'nein', fillStyle: 'crimson', weight: 1 },
     ];
 
     for (let i = 0; i < this.evolutionCredits; i++) {
-      const firstNoIndex = this.evolveOdds.findIndex(item => item.text === 'no');
+      const firstNoIndex = this.evolveOdds.findIndex(item => item.text === 'nein');
       if (firstNoIndex !== -1) {
         this.evolveOdds.splice(firstNoIndex, 1);
       }

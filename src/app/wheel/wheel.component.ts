@@ -258,7 +258,7 @@ export class WheelComponent implements AfterViewInit, OnChanges, OnDestroy {
   private startAutoSpinCountdown(): void {
     if (!this.settingsService.currentSettings.autoSpin) return;
     this.cancelAutoSpinCountdown();
-    this.autoSpinCountdown = 10;
+    this.autoSpinCountdown = 7;
     this.autoSpinTimer = setInterval(() => {
       this.autoSpinCountdown--;
       if (this.autoSpinCountdown <= 0) {
