@@ -13,9 +13,9 @@ export class AppComponent {
   title = 'pokemon-roulette';
 
   constructor(private translate: TranslateService) {
-    const savedLanguage = localStorage.getItem('language') || 'en';
-    this.translate.addLangs(['en', 'fr', 'es']);
-    this.translate.setDefaultLang('en');
+    const savedLanguage = localStorage.getItem('language') || 'de';
+    this.translate.addLangs(['en', 'fr', 'es', 'de']);
+    this.translate.setDefaultLang('de');
     this.translate.use(savedLanguage);
   }
 

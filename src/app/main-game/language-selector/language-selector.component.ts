@@ -18,6 +18,7 @@ export class LanguageSelectorComponent {
   private translateService = inject(TranslateService);
 
   languages: Language[] = [
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
     { code: 'en', name: 'English', flag: '🇺🇸' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
     { code: 'es', name: 'Español', flag: '🇪🇸' },
